@@ -1,0 +1,14 @@
+{% extends "index.html" %}
+{% block top %}
+<h1>Search result:</h1>
+<ul>
+	{% if not coins %}
+		<li>No result found</li>
+	{% else %}
+		{% for coin in coins %}
+			<li><a href="/cryptocurrency/{{coin.ticker}}">{{coin.name}} ({{coin.ticker}})</a></li>
+		{% endfor %}
+	{% endif %}
+</ul>
+
+{% endblock %}

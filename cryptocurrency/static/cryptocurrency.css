@@ -1,0 +1,17 @@
+.error {
+	color: red;
+	font-size: large;
+}
+
+.currency-title {
+	font-size: x-large;
+	font-weight: bold;
+}
+
+.watch {
+	float: right;
+}
+
+.image {
+	max-height: 50px;
+}

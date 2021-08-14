@@ -1,0 +1,40 @@
+{% extends "index.html" %}
+{% block top %}
+<div>
+    <h1>Your Transaction history</h1>
+</div>
+<table class="table table-hover">
+	<thead>
+	<tr>
+		<th>Transaction Type</th>
+		<th>Cryptocurrency</th>
+		<th>Price</th>
+		<th>Amount</th>
+		<th>Time</th>
+	</tr>
+	</thead>
+	<tbody>
+	{% for transaction in transactions %}
+		<tr>
+			<td>{{transaction.transaction_type}}</td>
+			<td>{{transaction.currency.ticker}}</td>
+			<td>{{transaction.price}}</td>
+			<td>{{transaction.amount}}</td>
+			<td>{{transaction.date_time}}</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+<!--
+<div class="list-group">
+    <a href="#" class="list-group-item list-group-item-action list-group-item-success">A simple success list group item</a>
+    <a href="#" class="list-group-item list-group-item-action list-group-item-success">A simple success list group item</a>
+    <a href="#" class="list-group-item list-group-item-action list-group-item-success">A simple success list group item</a>
+    <a href="#" class="list-group-item list-group-item-action list-group-item-danger">A simple danger list group item</a>
+    <a href="#" class="list-group-item list-group-item-action list-group-item-success">A simple success list group item</a>
+    <a href="#" class="list-group-item list-group-item-action list-group-item-success">A simple success list group item</a>
+    <a href="#" class="list-group-item list-group-item-action list-group-item-success">A simple success list group item</a>
+    <a href="#" class="list-group-item list-group-item-action list-group-item-success">A simple success list group item</a>
+  </div>
+-->
+{% endblock %}

@@ -1,0 +1,127 @@
+{% extends "index.html" %}
+
+{% block top %}
+<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none !important;
+        margin: 0;
+    }
+</style>
+
+<script type="text/javascript">
+	function num(obj){
+        obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');
+    }
+</script>
+<span class="currency-title">
+	{{name}} ({{ticker}})
+</span>
+{% if coin in watchList.watched.all %}
+	<a href="/unwatch/{{ticker}}" class="watch">
+		Unwatch
+	</a>
+{% else %}
+	<a href="/watch/{{ticker}}" class="watch">
+		Watch
+	</a>
+{% endif %}
+
+<canvas class="my-4 w-100" id="coinChart" width="800" height="200"></canvas>
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th id="current-price">Price: {{price}}USD</th>
+      <th>Your Position: {{hold}}</th>
+      <th>Can Sell: {{canSell}}</th>
+      <th>Your Position Cost: {{cost}}USD</th>
+      <th>Your Balance: {{cash}}USD</th>
+    </tr>
+  </thead>
+	<!-- Price: {{price}}USD
+	</br>
+	Your Position: {{hold}}
+	</br>
+	Can Sell: {{canSell}}
+	</br>
+	Your Position Cost: {{cost}}USD
+	</br>
+	Your Balance: {{cash}}USD -->
+</table>
+{% if error %}
+	<div class="error">
+		{{error}}
+	</div>
+{% endif %}
+
+
+<form action="/cryptocurrency/{{ticker}}" method="post">
+    <div class="form-row">
+      <div class="col-md-3 mb-3">
+        <label for="validationDefault03">Quantity</label>
+        <input type="number" step="0.01" id="amountInput" name="quantity" onkeyup="num(this), document.getElementById('moneyAmount').value=this.value*{{price}}" onblur="document.getElementById('moneyAmount').value=this.value*{{price}}" required>
+      </div>
+      <div class="col-md-3 mb-3">
+        <label for="validationDefault04">Trade</label>
+        <select class="custom-select" id="validationDefault04" name="type" required>
+          <option>Buy</option>
+          <option>Sell</option>
+        </select>
+      </div>
+      <!-- <div class="col-md-3 mb-3">
+        <label for="validationDefault05">Zip</label>
+        <input type="text" class="form-control" id="validationDefault05" required>
+      </div> -->
+    </div>
+    <div class="form-group">
+		</br>
+      <div>
+        Est. Amount of Money :
+      </div>
+	  <input type="text" id="moneyAmount" name="moneyAmount" readonly="readonly">
+    </div>
+    <button class="btn btn-primary" type="submit">Submit</button>
+	{% csrf_token %}
+</form>
+</br>
+<table class="table table-hover">
+	<thead>
+	<tr>
+		<th>Bid</th>
+		<th>Amount</th>
+	</tr>
+	</thead>
+	<tbody>
+	{% for buyOrder in topBuy %}
+		<tr>
+			<td>{{buyOrder.price}}</td>
+			<td>{{buyOrder.amount}}</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+	<thead>
+	<tr>
+		<th>Ask</th>
+		<th>Amount</th>
+	</tr>
+	</thead>
+	<tbody>
+	{% for sellOrder in topSell %}
+		<tr>
+			<td>{{sellOrder.price}}</td>
+			<td>{{sellOrder.amount}}</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+<script>
+	var currentTicker = "{{ ticker }}"
+	window.onload = getOnePrice;
+	window.onload = coinChart;
+	window.setInterval(getOnePrice, 10000);
+</script>
+
+
+{% endblock %}

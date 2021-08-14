@@ -1,0 +1,38 @@
+{% extends "index.html" %}
+{% block top %}
+
+<h2>News</h2>
+<div>
+<table class="table table-xl">
+  <tbody>
+	{% for article in news %}
+	<tr>
+	  <td><picture><img class="image" src="{{article.news_image}}"></picture></td>
+	  <td><a href="{{article.news_link}}">{{article.news_title}}</a> </td>
+	</tr>
+	{% endfor %}
+  </tbody>
+</table>
+</div>
+
+<div class="table">
+	<table class="table table-xl">
+	  <thead>
+		<tr>
+		  <th>Name</th>
+		  <th>Ticker</th>
+		  <th>Price</th>
+		</tr>
+	  </thead>
+	  <tbody>
+		{% for coin in coins %}
+			<tr>
+				<td><a href="/cryptocurrency/{{coin.ticker}}">{{coin.name}}</a></td>
+				<td><a href="/cryptocurrency/{{coin.ticker}}">{{coin.ticker}}</a></td>
+				<td>${{coin.price}}</td>
+			</tr>
+		{% endfor %}
+	  </tbody>
+	</table>
+</div>
+{% endblock %}

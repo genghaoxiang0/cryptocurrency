@@ -1,0 +1,59 @@
+{% extends "index.html" %}
+{% block top %}
+<h1>Your Balance: {{cash}} USD</h1>
+{% if error %}
+	<div class="error">
+		{{error}}
+	</div>
+{% endif %}
+<form action="{% url 'deposit' %}" method="post">
+    <div class="form-col">
+        <div class="col-md-6 mb-3">
+            <label for="validationDefault04">From</label>
+            <select class="custom-select" id="validationDefault04" name="type" required>
+              <option>Deposit</option>
+              <option>Withdraw</option>
+            </select>
+        </div>
+      <div class="form-col">
+        <div class="col-md-6 mb-3">
+          <label for="validationDefault01">Card Number:</label>
+          <input type="test" class="form-control" onkeyup="this.value=this.value.replace(/[^0-9]/g,'')" onafterpaste="this.value=this.value.replace(/[^0-9]/g,'')" value="" required>
+        </div>
+      </div>
+      <div class="form-col">
+        <div class="col-md-6 mb-3">
+          <label for="validationDefault01">Amount:</label>
+          <input type="test" class="form-control" name="amount" onkeyup="this.value=this.value.replace(/[^0-9]/g,'')" onafterpaste="this.value=this.value.replace(/[^0-9]/g,'')" value="" required>
+        </div>
+      </div>
+      <!-- <div class="col-md-3 mb-3">
+        <label for="validationDefault05">Zip</label>
+        <input type="text" class="form-control" id="validationDefault05" required>
+      </div> -->
+    </div>
+    <button class="btn btn-primary" type="submit">Submit</button>
+	{% csrf_token %}
+  </form>
+  </br>
+  <table class="table table-hover">
+	<thead>
+	<tr>
+		<th>Transaction Type</th>
+		<th>Amount</th>
+		<th>Time</th>
+	</tr>
+	</thead>
+	<tbody>
+	{% for record in depositWithdraw %}
+		{% if record.user == user %}
+			<tr>
+				<td>{{record.transaction_type}}</td>
+				<td>${{record.amount}}</td>
+				<td>{{record.date_time}}</td>
+			</tr>
+		{% endif %}
+	{% endfor %}
+	</tbody>
+  </table>
+{% endblock %}

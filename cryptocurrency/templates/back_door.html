@@ -1,0 +1,57 @@
+{% extends "index.html" %}
+
+{% block top %}
+<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none !important;
+        margin: 0;
+    }
+</style>
+<script type="text/javascript">
+	function num(obj){
+        obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');
+    }
+</script>
+<div>
+	Price: {{price}}USD
+	</br>
+	Your Position: {{hold}}
+	</br>
+	Your Position Cost: {{cost}}USD
+	</br>
+	Your Balance: {{cash}}USD
+</div>
+{% if error %}
+	<div class="error">
+		{{error}}
+	</div>
+{% endif %}
+<form action="/back_door/{{ticker}}" method="post">
+    <div class="form-row">
+      <div class="col-md-6 mb-3">
+        <label for="validationDefault03">Quantity</label>
+        <input type="number" step="0.01" id="amountInput" name="quantity" onkeyup="num(this), document.getElementById('moneyAmount').value=this.value*{{price}}" onblur="document.getElementById('moneyAmount').value=this.value*{{price}}" required>
+      </div>
+      <div class="col-md-3 mb-3">
+        <label for="validationDefault04">Trade</label>
+        <select class="custom-select" id="validationDefault04" name="type" required>
+          <option>Buy</option>
+          <option>Sell</option>
+        </select>
+      </div>
+      <!-- <div class="col-md-3 mb-3">
+        <label for="validationDefault05">Zip</label>
+        <input type="text" class="form-control" id="validationDefault05" required>
+      </div> -->
+    </div>
+    <div class="form-group">
+      <div>
+        Est. Amount of Money :
+      </div>
+	  <input type="text" id="moneyAmount" name="moneyAmount" readonly="readonly">
+    </div>
+    <button class="btn btn-primary" type="submit">Submit</button>
+	{% csrf_token %}
+  </form>
+{% endblock %}
